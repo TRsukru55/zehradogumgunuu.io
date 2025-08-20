@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>İyi doğdun prenses 🎂</title>
+  <style>
+    :root{
+      --fg:#2b2b2b;
+      --accent:#ff6b9a;
+    }
+    html,body{height:100%;margin:0;}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--fg);
+      background: url('arka-plan.jpg') no-repeat center center/cover;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+    }
+
+    .card{
+      text-align:center;
+      padding: clamp(20px, 5vw, 48px);
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.15);
+      max-width: 720px;
+      width: min(92vw, 720px);
+      position: relative;
+      z-index: 2;
+    }
+
+    h1{
+      font-size: clamp(28px, 6vw, 60px);
+      margin: 0 0 12px 0;
+    }
+    .type{
+      display:inline-block;
+      border-right: 2px solid var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      animation: caret 0.8s steps(1) infinite;
+    }
+    @keyframes caret{50%{border-color: transparent}}
+
+    p{margin:6px 0 0 0;font-size: clamp(14px, 2.5vw, 20px);opacity:.8;}
+
+    .controls{margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+    button{
+      border:none;padding:12px 18px;border-radius:999px;font-size:16px;cursor:pointer;
+      background: var(--accent);color: white;box-shadow: 0 6px 16px rgba(255, 107, 154, .35);
+    }
+
+    .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:1;}
+    .heart{position:absolute; font-size: 18px; opacity:.7; animation: floatUp linear forwards;}
+    @keyframes floatUp{to{ transform: translateY(-120vh) rotate(360deg); opacity:0; }}
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <main class="card">
+    <h1><span id="typed" class="type"> </span> 🎀</h1>
+    <p>Bugün çok özel bir gün. Dilerim yüzün hep gülsün ✨</p>
+
+    <div class="controls">
+      <button id="playBtn">▶ Müzik</button>
+      <button id="confettiBtn">💖 Kalpler</button>
+    </div>
+  </main>
+
+  <!-- mp3 dosyanı buraya ekliyorsun -->
+  <!-- Örn: aynı klasörde "sarki.mp3" varsa src="sarki.mp3" yaz -->
+  <audio id="bgm" preload="auto" loop src="sarki.mp3"></audio>
+
+  <script>
+    // Yazı efekti
+    const text = "İyi doğdun prenses";
+    const el = document.getElementById('typed');
+    let i=0;
+    function type(){
+      if(i<=text.length){
+        el.textContent=text.slice(0,i++);
+        setTimeout(type,90);
+      }else{el.classList.remove('type');}
+    } type();
+
+    // Müzik
+    const audio=document.getElementById('bgm');
+    document.getElementById('playBtn').addEventListener('click',(event)=>{
+      if(audio.paused){audio.play();event.target.textContent='⏸ Durdur';}
+      else{audio.pause();event.target.textContent='▶ Müzik';}
+    });
+
+    // Kalpler
+    const hearts=document.getElementById('hearts');
+    function spawnHearts(count=16){
+      for(let n=0;n<count;n++){
+        const span=document.createElement('span');
+        span.className='heart';
+        span.textContent=Math.random()>.35?'❤':'💗';
+        span.style.left=Math.random()*100+'vw';
+        span.style.bottom='-40px';
+        span.style.fontSize=(14+Math.random()*22)+'px';
+        span.style.animationDuration=(5+Math.random()*6)+'s';
+        hearts.appendChild(span);
+        setTimeout(()=>span.remove(),7000);
+      }
+    }
+    spawnHearts();
+    document.getElementById('confettiBtn').addEventListener('click',()=>spawnHearts(20));
+  </script>
+</body>
+</html>
