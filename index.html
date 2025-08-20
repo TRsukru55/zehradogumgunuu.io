@@ -1,116 +1,185 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>İyi doğdun prenses 🎂</title>
+  <title>Doğum Günün Kutlu Olsun Prenses 🎂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{
-      --fg:#2b2b2b;
-      --accent:#ff6b9a;
-    }
-    html,body{height:100%;margin:0;}
-    body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--fg);
-      background: url('arka-plan.jpg') no-repeat center center/cover;
-      display:grid;
-      place-items:center;
-      overflow:hidden;
-    }
+    body { font-family: 'Poppins', sans-serif; background: #fff6f9; }
+    .card { background: #fff; border-radius: 1.5rem; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+    .hearts span { position: absolute; color: #ff6b9d; font-size: 20px; animation: float 8s linear infinite; }
+    @keyframes float { 0% { transform: translateY(100vh); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(-10vh); opacity: 0; } }
 
-    .card{
-      text-align:center;
-      padding: clamp(20px, 5vw, 48px);
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(6px);
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.15);
-      max-width: 720px;
-      width: min(92vw, 720px);
-      position: relative;
-      z-index: 2;
-    }
+    .wish-accepted { animation: fadeInOut 3s ease forwards; }
+    @keyframes fadeInOut { 0% { opacity: 0; transform: scale(0.8); } 20% { opacity: 1; transform: scale(1.05); } 80% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.8); } }
 
-    h1{
-      font-size: clamp(28px, 6vw, 60px);
-      margin: 0 0 12px 0;
-    }
-    .type{
-      display:inline-block;
-      border-right: 2px solid var(--accent);
-      white-space: nowrap;
-      overflow: hidden;
-      animation: caret 0.8s steps(1) infinite;
-    }
-    @keyframes caret{50%{border-color: transparent}}
+    .stars span { position: absolute; color: gold; font-size: 24px; animation: twinkle 2s infinite alternate; }
+    @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
 
-    p{margin:6px 0 0 0;font-size: clamp(14px, 2.5vw, 20px);opacity:.8;}
+    .music-btn { background: linear-gradient(135deg, #ff85a2, #ff6b9d); color: #fff; font-weight: 600; border-radius: 9999px; padding: 0.5rem 1.25rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(255,107,157,0.35); transition: transform .2s, box-shadow .2s; }
+    .music-btn:hover { transform: scale(1.06); box-shadow: 0 6px 16px rgba(255,107,157,0.5); }
 
-    .controls{margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-    button{
-      border:none;padding:12px 18px;border-radius:999px;font-size:16px;cursor:pointer;
-      background: var(--accent);color: white;box-shadow: 0 6px 16px rgba(255, 107, 154, .35);
-    }
+    #muteToggle { position: fixed; top: 1rem; right: 1rem; z-index: 50; }
 
-    .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:1;}
-    .heart{position:absolute; font-size: 18px; opacity:.7; animation: floatUp linear forwards;}
-    @keyframes floatUp{to{ transform: translateY(-120vh) rotate(360deg); opacity:0; }}
+    /* Mektup arka planı */
+    #modal .letter-bg { background: url('mektup-bg.jpg') no-repeat center/cover; color: #222; }
   </style>
 </head>
-<body>
-  <div class="hearts" id="hearts"></div>
+<body class="flex items-center justify-center min-h-screen p-6 relative overflow-hidden">
 
-  <main class="card">
-    <h1><span id="typed" class="type"> </span> 🎀</h1>
-    <p>Bugün çok özel bir gün. Dilerim yüzün hep gülsün ✨</p>
+  <div class="hearts">
+    <span style="left:10%">❤</span>
+    <span style="left:30%">❤</span>
+    <span style="left:50%">❤</span>
+    <span style="left:70%">❤</span>
+    <span style="left:90%">❤</span>
+  </div>
 
-    <div class="controls">
-      <button id="playBtn">▶ Müzik</button>
-      <button id="confettiBtn">💖 Kalpler</button>
+  <main class="card max-w-3xl w-full p-8 text-center relative z-10">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Doğum Günün Kutlu Olsun, Prenses! 🎂</h1>
+    <p class="text-gray-500 mt-2">Bugün sadece senin günün. İyi ki doğdun, iyi ki varsın. 💖</p>
+
+    <div class="flex flex-col md:flex-row items-center gap-6 mt-8">
+      <div class="w-36 h-36 rounded-full bg-pink-100 border-4 border-white shadow overflow-hidden">
+        <img src="prenses.jpg" alt="Prenses Fotoğrafı" class="w-full h-full object-cover">
+      </div>
+      <div class="flex-1 border border-pink-200 bg-pink-50 p-4 rounded-xl text-gray-700">
+        Sen gülerken dünya güzelleşiyor. Bu küçük sayfa, sana olan sevgimi kutlamanın sade bir yolu. ✨
+      </div>
     </div>
+
+    <div class="flex gap-4 justify-center mt-8 flex-wrap">
+      <button onclick="openLetter()" class="bg-pink-500 text-white px-6 py-2 rounded-full font-semibold shadow hover:scale-105 transition">Sürpriz Mektubu Aç</button>
+      <button onclick="makeWish()" class="bg-white text-pink-500 border border-pink-300 px-6 py-2 rounded-full font-semibold shadow hover:scale-105 transition">Bir Dilek Tut ✨</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 text-left">
+      <div class="p-4 rounded-xl border border-pink-100 bg-white shadow">
+        <h3 class="font-semibold text-gray-900">Bugünün Sözü</h3>
+        <p class="text-sm text-gray-500">“Bir ömür aynı hayalin peşinden yürüyelim.”</p>
+      </div>
+      <div class="p-4 rounded-xl border border-pink-100 bg-white shadow">
+        <h3 class="font-semibold text-gray-900">Birlikte Yapılacaklar</h3>
+        <p class="text-sm text-gray-500">🎬 Film gecesi • 🍰 Pasta • 🌙 Gece yürüyüşü</p>
+      </div>
+      <div class="p-4 rounded-xl border border-pink-100 bg-white shadow">
+        <h3 class="font-semibold text-gray-900">Sürpriz</h3>
+        <p class="text-sm text-gray-500">Mektubu açmayı unutma! 💌</p>
+      </div>
+    </div>
+
+    <div class="mt-8 flex flex-col items-center gap-3">
+      <audio id="bgMusic" src="muzik1.mp3" loop playsinline></audio>
+      <audio id="btnMusic" src="muzik2.mp3" playsinline></audio>
+      <button id="playToggle" class="music-btn">▶️ İkinci Müziği Çal</button>
+      <small class="text-gray-400">Arka plan müziği otomatik başlar; başlamazsa aşağıdaki düğmeyle başlatabilirsin.</small>
+    </div>
+
+    <footer class="mt-6 text-gray-400 text-sm">2025 • Sevgiyle hazırlandı 💌</footer>
   </main>
 
-  <!-- mp3 dosyanı buraya ekliyorsun -->
-  <!-- Örn: aynı klasörde "sarki.mp3" varsa src="sarki.mp3" yaz -->
-  <audio id="bgm" preload="auto" loop src="sarki.mp3"></audio>
+  <button id="muteToggle" class="music-btn">🔇 Sesi Kapat</button>
+
+  <div id="musicBanner" class="hidden fixed bottom-4 inset-x-0 flex justify-center z-50">
+    <button id="startMusic" class="music-btn">▶️ Müziği Başlat</button>
+  </div>
+
+  <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-6 z-20">
+    <div class="letter-bg rounded-2xl p-6 max-w-lg shadow-lg relative">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold">Sana Bir Mektup</h2>
+        <button onclick="closeLetter()" class="text-black text-xl">✕</button>
+      </div>
+      <p>Sevgili <b>Prenses</b>,</p>
+      <p>İyi ki doğdun. Varlığın, günlerime renk, kalbime huzur katıyor. Nice yılları birlikte kutlamak dileğiyle...</p>
+      <p>💖</p>
+    </div>
+  </div>
+
+  <div id="wishModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-6 z-20">
+    <div class="bg-white rounded-2xl p-6 max-w-md text-gray-700 shadow-lg text-center relative">
+      <button onclick="closeWish()" class="absolute top-2 right-3 text-gray-500 text-xl">✕</button>
+      <h2 class="text-lg font-bold mb-4">Bir Dilek Tut ✨</h2>
+      <input id="wishInput" type="text" placeholder="Dileğini yaz..." class="w-full border p-2 rounded mb-4" />
+      <button onclick="submitWish()" class="bg-pink-500 text-white px-6 py-2 rounded-full font-semibold shadow hover:scale-105 transition">Dileği Gönder</button>
+    </div>
+  </div>
+
+  <div id="wishAccepted" class="hidden fixed inset-0 flex items-center justify-center z-30">
+    <div class="wish-accepted bg-white rounded-2xl p-6 shadow-lg text-center text-pink-600 font-bold text-xl relative">
+      <div class="stars">
+        <span style="top:10%;left:20%">⭐</span>
+        <span style="top:30%;left:70%">⭐</span>
+        <span style="top:60%;left:40%">⭐</span>
+        <span style="top:80%;left:80%">⭐</span>
+      </div>
+      <p id="wishMessage"></p>
+      <p id="extraMessage" class="mt-2 text-gray-700"></p>
+    </div>
+  </div>
 
   <script>
-    // Yazı efekti
-    const text = "İyi doğdun prenses";
-    const el = document.getElementById('typed');
-    let i=0;
-    function type(){
-      if(i<=text.length){
-        el.textContent=text.slice(0,i++);
-        setTimeout(type,90);
-      }else{el.classList.remove('type');}
-    } type();
+    function openLetter(){ document.getElementById('modal').classList.remove('hidden'); }
+    function closeLetter(){ document.getElementById('modal').classList.add('hidden'); }
 
-    // Müzik
-    const audio=document.getElementById('bgm');
-    document.getElementById('playBtn').addEventListener('click',(event)=>{
-      if(audio.paused){audio.play();event.target.textContent='⏸ Durdur';}
-      else{audio.pause();event.target.textContent='▶ Müzik';}
-    });
-
-    // Kalpler
-    const hearts=document.getElementById('hearts');
-    function spawnHearts(count=16){
-      for(let n=0;n<count;n++){
-        const span=document.createElement('span');
-        span.className='heart';
-        span.textContent=Math.random()>.35?'❤':'💗';
-        span.style.left=Math.random()*100+'vw';
-        span.style.bottom='-40px';
-        span.style.fontSize=(14+Math.random()*22)+'px';
-        span.style.animationDuration=(5+Math.random()*6)+'s';
-        hearts.appendChild(span);
-        setTimeout(()=>span.remove(),7000);
+    function makeWish(){ document.getElementById('wishModal').classList.remove('hidden'); }
+    function closeWish(){ document.getElementById('wishModal').classList.add('hidden'); }
+    function submitWish(){
+      const wish = document.getElementById('wishInput').value.trim();
+      if(wish){
+        document.getElementById('wishMessage').innerText = 'Dileğin kabul oldu 🎉 (üniversite kazanmak olduğunu biliyorum)';
+        document.getElementById('extraMessage').innerText = 'kjdspıofıofh';
+        document.getElementById('wishModal').classList.add('hidden');
+        document.getElementById('wishInput').value = '';
+        const wa = document.getElementById('wishAccepted');
+        wa.classList.remove('hidden');
+        setTimeout(()=>{ wa.classList.add('hidden'); }, 4000);
       }
     }
-    spawnHearts();
-    document.getElementById('confettiBtn').addEventListener('click',()=>spawnHearts(20));
+
+    const bg = document.getElementById('bgMusic');
+    const second = document.getElementById('btnMusic');
+    const toggle = document.getElementById('playToggle');
+    const muteBtn = document.getElementById('muteToggle');
+    const banner = document.getElementById('musicBanner');
+    const startBtn = document.getElementById('startMusic');
+
+    function startBackgroundMusic(){
+      bg.play().then(()=>{ banner.classList.add('hidden'); }).catch(()=>{ banner.classList.remove('hidden'); });
+    }
+
+    window.addEventListener('load', startBackgroundMusic);
+    document.addEventListener('click', startBackgroundMusic, { once: true });
+    document.addEventListener('touchstart', startBackgroundMusic, { once: true });
+    startBtn.addEventListener('click', startBackgroundMusic);
+
+    let secondPlaying = false;
+    toggle.addEventListener('click', ()=>{
+      if(!secondPlaying){
+        bg.pause();
+        second.play().catch(()=>{});
+        secondPlaying = true;
+        toggle.textContent = '⏸️ İkinci Müziği Durdur';
+      } else {
+        second.pause();
+        bg.play().catch(()=>{});
+        secondPlaying = false;
+        toggle.textContent = '▶️ İkinci Müziği Çal';
+      }
+    });
+
+    let muted = false;
+    muteBtn.addEventListener('click', ()=>{
+      muted = !muted;
+      bg.muted = muted;
+      second.muted = muted;
+      muteBtn.textContent = muted ? '🔊 Sesi Aç' : '🔇 Sesi Kapat';
+    });
   </script>
+
 </body>
 </html>
